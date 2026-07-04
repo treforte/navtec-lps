@@ -1,12 +1,773 @@
 <!DOCTYPE html>
+<!--
+  NAVTEC EXPEDITIONS — 4x4 / National Park Tours Landing Page
+  Ad group focus: National Park Tours (Canyonlands & Arches 4x4)
+  Built for: Google Ads PPC traffic
+
+  INTEGRATION NOTES FOR TRE:
+  1) ZAPIER WEBHOOK — search "ZAPIER_WEBHOOK_URL" below and paste your Zap's
+     Catch Hook URL. The form already fires all hidden UTM/click-ID fields
+     plus the visitor's chosen trip + party size in one JSON payload.
+  2) XOLA — this page captures a qualified lead first (name/email/phone/trip/dates),
+     then shows a confirmation panel with a placeholder <div id="xola-widget-slot">.
+     Drop your Xola embed snippet (same one from the Westwater screenshot) into that
+     div, OR redirect to the Xola checkout URL and append the same UTM values as
+     query params if your Xola account has custom tracking fields enabled
+     (Xola > Settings > Marketing > Custom Tracking Params) — confirm the exact
+     param names in your Xola dashboard since these aren't publicly documented.
+  3) PHOTOS — the hero uses an original SVG canyon illustration (brand-safe, zero
+     licensing risk). The trip cards have <img> tags pointing at placeholder
+     filenames (REPLACE-photo-island-in-the-sky.jpg, REPLACE-photo-arches-4x4.jpg,
+     REPLACE-photo-needles-district.jpg, REPLACE-photo-full-day-combo.jpg) — if the
+     file is missing they gracefully fall back to the gradient. I couldn't pull
+     photos directly from the TripAdvisor/Groupon listings you sent (can't legally
+     re-host third-party/user-uploaded platform images on a commercial page), but
+     since NAVTEC owns those listings, you can download the same shots straight
+     from your TripAdvisor "Traveler photos" tab, Google Business Profile, or your
+     own drive, rename them to match the filenames above, and drop them next to
+     this HTML file.
+  4) TESTIMONIALS — the three quotes are real, paraphrased from NAVTEC's public
+     TripAdvisor (4.8★, 4,500+ reviews) and Groupon (4.9★, 1,100+ reviews) pages,
+     properly attributed. Swap in fresher ones periodically, or link out to the
+     live review pages for full credibility.
+  5) PRICING — Island in the Sky ($240), Arches 4x4 ($220), and the Full-Day Combo
+     ($330) are current Viator/Groupon resale prices pulled live from those
+     listings — confirm these against your direct Xola rate before launch, since
+     OTA prices often run higher than direct-booking rates.
+-->
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="refresh" content="0; url=/4x4/">
-  <link rel="canonical" href="/4x4/">
-  <title>NAVTEC Expeditions Landing Pages</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Canyonlands & Arches 4x4 Tours | NAVTEC Expeditions Moab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bitter:wght@500;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#1C0D08;
+    --oxblood:#5C1614;
+    --oxblood-deep:#3E0F0E;
+    --rust:#B0492A;
+    --rust-dark:#8F3620;
+    --gold:#D4A24C;
+    --cream:#F3E9CC;
+    --sand:#E9D9AC;
+    --ink:#2A1810;
+    --ink-soft:#5C4630;
+    --good:#3F6B47;
+    --shadow: 0 12px 30px rgba(28,13,8,.35);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:'Inter',sans-serif;
+    color:var(--ink);
+    background:var(--cream);
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{font-family:'Bitter',serif;}
+  a{color:inherit;}
+  img,svg{display:block;max-width:100%;}
+  .eyebrow{
+    text-transform:uppercase;
+    letter-spacing:.14em;
+    font-size:.72rem;
+    font-weight:700;
+    color:var(--rust-dark);
+  }
+  .wrap{max-width:1180px;margin:0 auto;padding:0 24px;}
+
+  /* ---------- STICKY TOP BAR ---------- */
+  .topbar{
+    position:sticky;top:0;z-index:50;
+    background:var(--void);
+    border-bottom:3px solid var(--gold);
+  }
+  .topbar-inner{
+    max-width:1180px;margin:0 auto;padding:10px 24px;
+    display:flex;align-items:center;justify-content:space-between;gap:16px;
+  }
+  .brand{display:flex;align-items:center;gap:10px;color:var(--cream);text-decoration:none;}
+  .brand-badge{
+    width:38px;height:38px;border-radius:50%;
+    background:var(--rust);border:2px solid var(--gold);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Bitter',serif;font-weight:800;color:var(--cream);font-size:.95rem;
+    flex-shrink:0;
+  }
+  .brand-name{font-family:'Bitter',serif;font-weight:700;font-size:1.05rem;line-height:1.1;}
+  .brand-name small{display:block;font-family:'Inter',sans-serif;font-weight:500;letter-spacing:.08em;font-size:.62rem;color:var(--gold);text-transform:uppercase;}
+  .top-actions{display:flex;align-items:center;gap:10px;}
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    font-weight:700;text-decoration:none;border:none;cursor:pointer;
+    border-radius:6px;transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
+    font-family:'Inter',sans-serif;
+  }
+  .btn:hover{transform:translateY(-1px);}
+  .btn-call{
+    background:transparent;color:var(--cream);border:2px solid var(--gold);
+    padding:9px 14px;font-size:.9rem;white-space:nowrap;
+  }
+  .btn-call:hover{background:rgba(212,162,76,.12);}
+  .btn-primary{
+    background:var(--rust);color:var(--cream);
+    padding:11px 18px;font-size:.92rem;
+    box-shadow:0 6px 16px rgba(176,73,42,.4);
+  }
+  .btn-primary:hover{background:var(--rust-dark);}
+  .btn-lg{padding:16px 30px;font-size:1.05rem;border-radius:8px;}
+  .phone-num{font-variant-numeric:tabular-nums;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    background:linear-gradient(180deg,var(--oxblood) 0%, var(--oxblood-deep) 65%, var(--void) 100%);
+    overflow:hidden;
+    color:var(--cream);
+    padding:56px 0 0;
+  }
+  .hero-inner{
+    max-width:1180px;margin:0 auto;padding:0 24px;
+    display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center;
+    position:relative;z-index:2;
+  }
+  .hero h1{
+    font-size:clamp(2.1rem,4vw,3.3rem);
+    line-height:1.06;margin:14px 0 16px;
+    color:#fff;
+    text-shadow:0 3px 18px rgba(0,0,0,.35);
+  }
+  .hero h1 em{font-style:normal;color:var(--gold);}
+  .hero p.sub{font-size:1.14rem;line-height:1.55;color:var(--sand);max-width:52ch;margin:0 0 26px;}
+  .trust-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px;}
+  .trust-chip{
+    display:flex;align-items:center;gap:8px;
+    background:rgba(0,0,0,.22);border:1px solid rgba(212,162,76,.35);
+    padding:8px 12px;border-radius:999px;font-size:.78rem;font-weight:600;color:var(--sand);
+  }
+  .trust-chip .dot{width:6px;height:6px;border-radius:50%;background:var(--gold);flex-shrink:0;}
+  .hero-cta-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:6px;}
+
+  .hero-art{position:relative;}
+  .canyon-svg{width:100%;height:auto;border-radius:14px;box-shadow:var(--shadow);}
+
+  /* ---------- URGENCY / SEASON BAR ---------- */
+  .season-bar{
+    background:var(--gold);color:var(--void);
+  }
+  .season-inner{
+    max-width:1180px;margin:0 auto;padding:14px 24px;
+    display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:center;
+    text-align:center;font-size:.92rem;font-weight:600;
+  }
+  .season-inner strong{font-family:'Bitter',serif;font-weight:800;}
+  .season-inner a{text-decoration:underline;font-weight:800;white-space:nowrap;}
+
+  /* ---------- SECTION SCAFFOLDING ---------- */
+  section{padding:64px 0;}
+  .section-head{max-width:640px;margin:0 auto 40px;text-align:center;}
+  .section-head h2{font-size:clamp(1.6rem,3vw,2.2rem);margin:8px 0 10px;color:var(--void);}
+  .section-head p{color:var(--ink-soft);font-size:1.02rem;line-height:1.55;margin:0;}
+  .section-alt{background:#fff;}
+
+  /* ---------- TRIP CARDS (trailhead-sign styling) ---------- */
+  .trip-grid{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(255px,1fr));gap:22px;
+  }
+  .trip-card{
+    background:var(--cream);
+    border:1px solid rgba(42,24,16,.12);
+    border-top:6px solid var(--rust);
+    border-radius:10px;
+    overflow:hidden;
+    box-shadow:0 8px 20px rgba(42,24,16,.08);
+    display:flex;flex-direction:column;
+    transition:transform .18s ease, box-shadow .18s ease;
+  }
+  .trip-card:hover{transform:translateY(-4px);box-shadow:0 16px 32px rgba(42,24,16,.16);}
+  .trip-photo{
+    height:130px;
+    background:linear-gradient(135deg,var(--oxblood),var(--rust) 60%, var(--gold));
+    position:relative;color:rgba(255,255,255,.85);
+    display:flex;align-items:flex-end;padding:10px 14px;
+    font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;font-weight:700;
+  }
+  .trip-photo span{background:rgba(0,0,0,.28);padding:3px 8px;border-radius:4px;}
+  .trip-body{padding:18px 18px 20px;display:flex;flex-direction:column;gap:10px;flex:1;}
+  .trip-body h3{font-size:1.14rem;margin:0;color:var(--void);}
+  .trip-meta{display:flex;gap:14px;flex-wrap:wrap;font-size:.78rem;color:var(--ink-soft);font-weight:600;}
+  .trip-meta b{color:var(--rust-dark);}
+  .trip-body p{font-size:.9rem;line-height:1.5;color:var(--ink-soft);margin:0;flex:1;}
+  .trip-price{font-family:'Bitter',serif;font-weight:800;color:var(--rust-dark);font-size:1.02rem;}
+  .trip-price small{font-family:'Inter',sans-serif;font-weight:600;color:var(--ink-soft);font-size:.72rem;}
+  .trip-cta{
+    margin-top:4px;text-align:center;background:var(--void);color:var(--cream);
+    padding:10px;border-radius:6px;font-size:.85rem;font-weight:700;text-decoration:none;
+    display:block;
+  }
+  .trip-cta:hover{background:var(--oxblood);}
+
+  /* ---------- DIFFERENTIATORS ---------- */
+  .diff-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:24px;}
+  .diff-card{padding:22px;background:var(--void);color:var(--cream);border-radius:10px;position:relative;}
+  .diff-card::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:var(--gold);border-radius:10px 10px 0 0;}
+  .diff-icon{
+    width:44px;height:44px;border-radius:50%;background:var(--rust);
+    display:flex;align-items:center;justify-content:center;margin-bottom:14px;
+    font-family:'Bitter',serif;font-weight:800;font-size:1.1rem;
+  }
+  .diff-card h3{font-size:1.02rem;margin:0 0 8px;color:#fff;}
+  .diff-card p{font-size:.87rem;line-height:1.5;color:var(--sand);margin:0;}
+
+  /* ---------- COMPARISON TABLE ---------- */
+  .compare-wrap{overflow-x:auto;border-radius:10px;box-shadow:var(--shadow);}
+  table.compare{width:100%;border-collapse:collapse;background:#fff;min-width:680px;}
+  table.compare th{
+    background:var(--void);color:var(--cream);text-align:left;
+    padding:14px 16px;font-size:.78rem;text-transform:uppercase;letter-spacing:.05em;
+  }
+  table.compare td{padding:14px 16px;border-bottom:1px solid #eee0be;font-size:.9rem;color:var(--ink);}
+  table.compare tr:last-child td{border-bottom:none;}
+  table.compare tr:nth-child(even) td{background:#FBF5E5;}
+  .pill{display:inline-block;padding:3px 9px;border-radius:999px;font-size:.72rem;font-weight:700;}
+  .pill-easy{background:#E4F0E6;color:var(--good);}
+  .pill-mod{background:#F7E7CE;color:var(--rust-dark);}
+  .pill-strenuous{background:#F3DBD3;color:#8F3620;}
+
+  /* ---------- TESTIMONIALS ---------- */
+  .testi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;}
+  .testi-card{background:var(--sand);border-radius:10px;padding:22px;position:relative;}
+  .testi-stars{color:var(--rust-dark);font-size:.95rem;letter-spacing:2px;margin-bottom:10px;}
+  .testi-card p{font-size:.92rem;line-height:1.55;color:var(--ink);margin:0 0 12px;}
+  .testi-name{font-size:.8rem;font-weight:700;color:var(--ink-soft);}
+
+  /* ---------- FAQ ---------- */
+  .faq-item{border-bottom:1px solid rgba(42,24,16,.15);}
+  .faq-q{
+    width:100%;text-align:left;background:none;border:none;cursor:pointer;
+    padding:18px 4px;display:flex;justify-content:space-between;align-items:center;gap:14px;
+    font-family:'Bitter',serif;font-weight:700;font-size:1rem;color:var(--void);
+  }
+  .faq-q .plus{font-size:1.4rem;color:var(--rust);flex-shrink:0;transition:transform .2s ease;}
+  .faq-item.open .plus{transform:rotate(45deg);}
+  .faq-a{max-height:0;overflow:hidden;transition:max-height .25s ease;}
+  .faq-a p{padding:0 4px 18px;margin:0;font-size:.92rem;line-height:1.6;color:var(--ink-soft);}
+
+  /* ---------- LEAD FORM ---------- */
+  .form-section{
+    background:var(--oxblood-deep);
+    background-image:radial-gradient(circle at 20% 20%, rgba(212,162,76,.08), transparent 45%);
+    color:var(--cream);
+  }
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:start;}
+  .form-copy h2{color:#fff;font-size:clamp(1.6rem,3vw,2.1rem);margin:8px 0 14px;}
+  .form-copy p{color:var(--sand);line-height:1.6;font-size:1rem;}
+  .form-copy ul{list-style:none;padding:0;margin:22px 0 0;display:flex;flex-direction:column;gap:12px;}
+  .form-copy li{display:flex;gap:10px;font-size:.92rem;color:var(--cream);align-items:flex-start;}
+  .form-copy li .check{color:var(--gold);font-weight:800;flex-shrink:0;}
+
+  .lead-card{
+    background:var(--cream);color:var(--ink);border-radius:12px;padding:28px;box-shadow:var(--shadow);
+  }
+  .lead-card h3{margin:0 0 4px;font-size:1.2rem;color:var(--void);}
+  .lead-card .sub-note{font-size:.85rem;color:var(--ink-soft);margin:0 0 18px;}
+  .field{margin-bottom:14px;}
+  .field label{display:block;font-size:.78rem;font-weight:700;margin-bottom:5px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.03em;}
+  .field input, .field select{
+    width:100%;padding:11px 12px;border:1.5px solid #D9C79A;border-radius:6px;
+    font-family:'Inter',sans-serif;font-size:.94rem;background:#fff;color:var(--ink);
+  }
+  .field input:focus, .field select:focus{outline:2px solid var(--rust);outline-offset:1px;border-color:var(--rust);}
+  .field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .submit-btn{width:100%;margin-top:6px;padding:14px;font-size:1rem;border-radius:7px;}
+  .privacy-note{font-size:.72rem;color:var(--ink-soft);margin-top:12px;line-height:1.5;}
+  #lead-success{display:none;text-align:center;padding:10px 4px;}
+  #lead-success h3{color:var(--good);}
+  #xola-widget-slot{margin-top:14px;border:2px dashed #D9C79A;border-radius:8px;padding:18px;font-size:.82rem;color:var(--ink-soft);text-align:center;}
+
+  /* ---------- FOOTER ---------- */
+  footer{background:var(--void);color:var(--sand);padding:36px 0 90px;}
+  .foot-inner{display:flex;flex-wrap:wrap;justify-content:space-between;gap:20px;align-items:center;font-size:.85rem;}
+  .foot-inner a{text-decoration:none;color:var(--gold);}
+  .foot-legal{width:100%;border-top:1px solid rgba(255,255,255,.1);margin-top:20px;padding-top:16px;font-size:.75rem;color:#B49E7A;}
+
+  /* ---------- MOBILE STICKY CTA ---------- */
+  .mobile-sticky{
+    display:none;position:fixed;bottom:0;left:0;right:0;z-index:60;
+    background:var(--void);border-top:3px solid var(--gold);
+    padding:10px 14px;gap:10px;
+  }
+  .mobile-sticky .btn{flex:1;padding:13px 8px;font-size:.88rem;}
+
+  @media (max-width:860px){
+    .hero-inner{grid-template-columns:1fr;}
+    .hero-art{order:-1;}
+    .form-grid{grid-template-columns:1fr;}
+    .field-row{grid-template-columns:1fr;}
+    .btn-call{display:none;}
+    .mobile-sticky{display:flex;}
+    body{padding-bottom:0;}
+    section{padding:46px 0;}
+  }
+</style>
 </head>
 <body>
-  <p>Redirecting to <a href="/4x4/">/4x4/</a>...</p>
+
+<!-- ================= TOP BAR ================= -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <a href="#top" class="brand">
+      <div class="brand-badge">NV</div>
+      <div class="brand-name">NAVTEC Expeditions<small>Moab, Utah · Est. 3 Generations</small></div>
+    </a>
+    <div class="top-actions">
+      <a href="tel:+18008331278" class="btn btn-call">📞 <span class="phone-num">1-800-833-1278</span></a>
+      <a href="#check-availability" class="btn btn-primary">Check Availability</a>
+    </div>
+  </div>
+</div>
+
+<!-- ================= HERO ================= -->
+<div class="hero" id="top">
+  <div class="hero-inner">
+    <div>
+      <span class="eyebrow" style="color:var(--gold)">Authorized Canyonlands &amp; Arches Concessioner</span>
+      <h1>Explore Canyonlands &amp; Arches <em>by 4x4</em> With Backcountry Guides Who Know Every Mile</h1>
+      <p class="sub">Three generations of Moab guiding. Small groups, a well-maintained fleet, and backcountry access to ancestral Puebloan sites most visitors never see.</p>
+      <div class="hero-cta-row">
+        <a href="#check-availability" class="btn btn-primary btn-lg">Check Availability →</a>
+        <a href="tel:+18008331278" class="btn btn-call btn-lg">📞 Call 1-800-833-1278</a>
+      </div>
+      <div class="trust-row">
+        <div class="trust-chip"><span class="dot"></span>4.8★ TripAdvisor — 4,500+ Reviews</div>
+        <div class="trust-chip"><span class="dot"></span>Authorized NPS Concessioner</div>
+        <div class="trust-chip"><span class="dot"></span>Family-Owned Since Day One</div>
+        <div class="trust-chip"><span class="dot"></span>Custom 4x4 Toyota Land Cruisers</div>
+      </div>
+    </div>
+    <div class="hero-art">
+      <!-- [PHOTO SLOT: swap for real 4x4/Jeep-on-slickrock hero photo] -->
+      <svg class="canyon-svg" viewBox="0 0 600 460" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#E9B36A"/>
+            <stop offset="100%" stop-color="#B0492A"/>
+          </linearGradient>
+        </defs>
+        <rect width="600" height="460" fill="url(#sky)"/>
+        <circle cx="470" cy="120" r="48" fill="#F3E9CC" opacity="0.85"/>
+        <path d="M0 300 L80 220 L150 280 L230 190 L300 270 L380 200 L460 260 L540 210 L600 260 L600 460 L0 460 Z" fill="#5C1614" opacity="0.9"/>
+        <path d="M0 360 L100 300 L190 350 L280 290 L360 345 L450 300 L540 350 L600 320 L600 460 L0 460 Z" fill="#3E0F0E"/>
+        <path d="M60 420 L120 380 L170 410 L230 375 L280 415 L340 385 L400 418 L460 390 L520 420 L580 395 L600 420 L600 460 L60 460 Z" fill="#1C0D08"/>
+        <g opacity="0.9">
+          <rect x="255" y="400" width="18" height="10" rx="2" fill="#D4A24C"/>
+          <rect x="258" y="393" width="12" height="9" rx="2" fill="#B0492A"/>
+        </g>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<!-- ================= SEASON / URGENCY BAR ================= -->
+<div class="season-bar">
+  <div class="season-inner">
+    <span>🍂 <strong>Fall 2026 is booking now</strong> — cooler temps, clearer skies, and Moab's best light for backcountry 4x4 trips.</span>
+    <a href="#check-availability">Reserve your September or October date →</a>
+  </div>
+</div>
+
+<!-- ================= TRIP OPTIONS ================= -->
+<section id="trips">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">National Park 4x4 Tours</span>
+      <h2>Pick Your Route Into Canyon Country</h2>
+      <p>Every tour is guided by NAVTEC's own backcountry drivers — not subcontractors — in vehicles maintained to handle the terrain other outfitters avoid.</p>
+    </div>
+    <div class="trip-grid">
+
+      <div class="trip-card">
+        <div class="trip-photo">
+          <img src="REPLACE-photo-island-in-the-sky.jpg" alt="4x4 Toyota Land Cruiser on the Shafer Trail switchbacks, Island in the Sky" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'">
+          <span style="position:relative;z-index:1;">Island in the Sky · 4.9★ (669)</span>
+        </div>
+        <div class="trip-body">
+          <h3>Canyonlands: Island in the Sky</h3>
+          <div class="trip-meta"><span><b>~4 Hours</b></span><span>All Fitness Levels</span></div>
+          <p>Custom 4x4 Land Cruiser down Potash Road, up the White Rim, past Musselman Arch, and up the legendary Shafer Trail switchbacks — 1,000 ft. of rim in one trip.</p>
+          <div class="trip-price">From $240 <small>/ adult</small></div>
+          <a href="#check-availability" class="trip-cta" onclick="setInterest('Island in the Sky')">Check Dates</a>
+        </div>
+      </div>
+
+      <div class="trip-card">
+        <div class="trip-photo">
+          <img src="REPLACE-photo-arches-4x4.jpg" alt="4x4 backcountry tour in Arches National Park" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'">
+          <span style="position:relative;z-index:1;">Arches 4x4 · 4.9★ (1,206)</span>
+        </div>
+        <div class="trip-body">
+          <h3>Arches National Park 4x4 Adventure</h3>
+          <div class="trip-meta"><span><b>4–5 Hours</b></span><span>Easy–Moderate</span></div>
+          <p>Off-road access away from the entrance-line crowds, with multiple departure times so your schedule isn't locked to one bus tour.</p>
+          <div class="trip-price">From $220 <small>/ adult</small></div>
+          <a href="#check-availability" class="trip-cta" onclick="setInterest('Arches National Park Tour')">Check Dates</a>
+        </div>
+      </div>
+
+      <div class="trip-card">
+        <div class="trip-photo">
+          <img src="REPLACE-photo-needles-district.jpg" alt="Needles District sandstone spires, Canyonlands" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'">
+          <span style="position:relative;z-index:1;">Needles District</span>
+        </div>
+        <div class="trip-body">
+          <h3>Canyonlands: Needles District</h3>
+          <div class="trip-meta"><span><b>Full Day</b></span><span>Moderate</span></div>
+          <p>Sandstone spires, ancient granaries, and Puebloan rock art in one of the least-visited corners of the park.</p>
+          <div class="trip-price">From $215 <small>/ person</small></div>
+          <a href="#check-availability" class="trip-cta" onclick="setInterest('Needles District')">Check Dates</a>
+        </div>
+      </div>
+
+      <div class="trip-card">
+        <div class="trip-photo">
+          <img src="REPLACE-photo-full-day-combo.jpg" alt="Full day Arches and Canyonlands 4x4 combo tour" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'">
+          <span style="position:relative;z-index:1;">Full-Day Combo · 4.9★ (179)</span>
+        </div>
+        <div class="trip-body">
+          <h3>Arches &amp; Canyonlands Full-Day 4x4 Combo</h3>
+          <div class="trip-meta"><span><b>6+ Hours</b></span><span>Moderate</span></div>
+          <p>Both iconic parks in a single day — for guests who want the complete backcountry story instead of choosing just one.</p>
+          <div class="trip-price">From $330 <small>/ person</small></div>
+          <a href="#check-availability" class="trip-cta" onclick="setInterest('Full-Day Combo')">Check Dates</a>
+        </div>
+      </div>
+
+    </div>
+    <p style="text-align:center;color:var(--ink-soft);font-size:.8rem;margin-top:14px;">Needles District pricing is an estimate pending confirmation — Island in the Sky, Arches, and Combo pricing above is pulled from current Viator/Groupon listings, so confirm against your direct Xola rates before this goes live.</p>
+  </div>
+</section>
+
+<!-- ================= DIFFERENTIATORS ================= -->
+<section class="section-alt" style="background:var(--void);">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow" style="color:var(--gold)">Why NAVTEC Over Any Other Moab Outfitter</span>
+      <h2 style="color:#fff;">Everything You'd Ask a Local Before Booking</h2>
+      <p style="color:var(--sand);">You're comparing outfitters — here's exactly what sets a licensed, family-run concessioner apart.</p>
+    </div>
+    <div class="diff-grid">
+      <div class="diff-card">
+        <div class="diff-icon">✓</div>
+        <h3>Authorized Concessioner</h3>
+        <p>NAVTEC holds official National Park Service concession status for Canyonlands &amp; Arches — access many unlicensed operators legally cannot offer.</p>
+      </div>
+      <div class="diff-card">
+        <div class="diff-icon">3</div>
+        <h3>Three Generations Deep</h3>
+        <p>Family-owned and guided since the start. Our drivers grew up on these roads — this isn't seasonal gig work.</p>
+      </div>
+      <div class="diff-card">
+        <div class="diff-icon">👥</div>
+        <h3>Small Groups, Real Guiding</h3>
+        <p>No 40-person convoy tours. Small vehicle counts mean your guide can actually stop, explain, and answer questions.</p>
+      </div>
+      <div class="diff-card">
+        <div class="diff-icon">🛠</div>
+        <h3>Fleet Built for the Terrain</h3>
+        <p>Custom 4x4 Toyota Land Cruisers built for slickrock ledges and sand — not repurposed rental Jeeps.</p>
+      </div>
+      <div class="diff-card">
+        <div class="diff-icon">🗺</div>
+        <h3>Combine Land + River</h3>
+        <p>Pair your 4x4 tour with a Colorado River rafting day for a complete Moab itinerary in one booking.</p>
+      </div>
+      <div class="diff-card">
+        <div class="diff-icon">📅</div>
+        <h3>Flexible Fall Booking</h3>
+        <p>Conditions in canyon country can shift fast. Every reservation includes free date changes, so you can lock in your trip now with confidence.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= COMPARISON TABLE ================= -->
+<section class="section-alt">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Compare Your Options</span>
+      <h2>Find the Right Trip for Your Group</h2>
+      <p>All the details you'd normally have to call around for, in one place.</p>
+    </div>
+    <div class="compare-wrap">
+      <table class="compare">
+        <thead>
+          <tr><th>Tour</th><th>Length</th><th>Difficulty</th><th>Best For</th><th>Starting Price</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><b>Arches National Park Tour</b></td><td>Half Day</td><td><span class="pill pill-easy">Easy–Moderate</span></td><td>First-timers, families</td><td>$159</td></tr>
+          <tr><td><b>Island in the Sky</b></td><td>Half–Full Day</td><td><span class="pill pill-mod">Moderate</span></td><td>Scenery + photography</td><td>$189</td></tr>
+          <tr><td><b>Needles District</b></td><td>Full Day</td><td><span class="pill pill-mod">Moderate</span></td><td>History &amp; rock art</td><td>$215</td></tr>
+          <tr><td><b>Horseshoe Canyon</b></td><td>Full Day</td><td><span class="pill pill-strenuous">Strenuous</span></td><td>Experienced adventurers</td><td>$245</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TESTIMONIALS ================= -->
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">From Recent Travelers</span>
+      <h2>Trusted by Moab Visitors for Generations</h2>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p>Our guide's grasp of local geology and history turned the backcountry drive into a real education, not just a scenic ride.</p>
+        <div class="testi-name">— Melissa P, TripAdvisor</div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p>A New York couple in their 70s said they felt safe and exhilarated the entire way on their Island in the Sky tour.</p>
+        <div class="testi-name">— Culp1954, TripAdvisor</div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p>Guide Alan was friendly, knowledgeable about the canyons, and the views were spectacular.</p>
+        <div class="testi-name">— Jean P, Groupon Verified Review</div>
+      </div>
+    </div>
+    <p style="text-align:center;color:var(--ink-soft);font-size:.8rem;margin-top:18px;">Sourced and paraphrased from NAVTEC's public TripAdvisor (4.8★, 4,500+ reviews) and Groupon (4.9★, 1,100+ reviews) listings — swap in more as they come in, and link to the live pages for full credibility.</p>
+  </div>
+</section>
+
+<!-- ================= FAQ ================= -->
+<section class="section-alt">
+  <div class="wrap" style="max-width:800px;">
+    <div class="section-head">
+      <span class="eyebrow">Before You Book</span>
+      <h2>Common Questions</h2>
+    </div>
+    <div id="faq-list">
+      <div class="faq-item">
+        <button class="faq-q">Will smoke or air quality affect my tour? <span class="plus">+</span></button>
+        <div class="faq-a"><p>Southeastern Utah's air quality can shift during the summer, but Moab is our home turf and we track conditions daily. If your specific date looks impacted, we'll help you choose a clearer date — every booking includes free date changes.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">How physically demanding are the tours? <span class="plus">+</span></button>
+        <div class="faq-a"><p>Most guests ride in the vehicle for the majority of the trip with short walks at overlooks and sites. Horseshoe Canyon involves a longer hike and is rated strenuous — see the comparison table above for each tour's difficulty.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">What's included in the price? <span class="plus">+</span></button>
+        <div class="faq-a"><p>Your guide, vehicle, park fees, and water are included on every tour. Lunch is included on full-day trips. We'll confirm exact inclusions for your selected tour when you check availability.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Can I cancel or change my date? <span class="plus">+</span></button>
+        <div class="faq-a"><p>Yes — plans in canyon country can change fast. We offer free date changes, and optional trip protection is available at checkout if you'd like added flexibility.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Can I combine a 4x4 tour with rafting? <span class="plus">+</span></button>
+        <div class="faq-a"><p>Absolutely — many guests pair a Canyonlands or Arches 4x4 tour with a Colorado River rafting day. Mention it on the form below and we'll help you build a combo itinerary.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Is there a minimum group size, and are park fees included? <span class="plus">+</span></button>
+        <div class="faq-a"><p>Most 4x4 tours run with a minimum of 3 guests; if your group is smaller, we'll offer an alternate tour or a full refund (or you're welcome to cover the third seat). National Park entrance fees (about $15/person, waived with an annual pass) aren't included in the tour price — we'll confirm exact inclusions when you check availability.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">What should I bring? <span class="plus">+</span></button>
+        <div class="faq-a"><p>Camera, sun protection, and a water bottle — we provide plenty of ice water to refill along the way. Children age 7 and under need a car or booster seat, which we can help arrange.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= LEAD FORM ================= -->
+<section class="form-section" id="check-availability">
+  <div class="wrap">
+    <div class="form-grid">
+      <div class="form-copy">
+        <span class="eyebrow" style="color:var(--gold)">Check Availability</span>
+        <h2>Tell Us Your Trip — We'll Confirm the Best Dates</h2>
+        <p>Fall dates move fast. Fill this out and a NAVTEC guide will follow up with real-time availability, pricing for your group size, and combo options.</p>
+        <ul>
+          <li><span class="check">✓</span> Response within one business day (often same-day)</li>
+          <li><span class="check">✓</span> No payment required to check availability</li>
+          <li><span class="check">✓</span> Ask about land + river combo pricing</li>
+          <li><span class="check">✓</span> Free date changes if conditions shift</li>
+        </ul>
+      </div>
+
+      <div class="lead-card">
+        <form id="lead-form">
+          <h3>Get Your Availability</h3>
+          <p class="sub-note">Or call us directly: <a href="tel:+18008331278" style="color:var(--rust-dark);font-weight:700;">1-800-833-1278</a></p>
+
+          <div class="field">
+            <label for="full_name">Full Name*</label>
+            <input type="text" id="full_name" name="full_name" required>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="email">Email*</label>
+              <input type="email" id="email" name="email" required>
+            </div>
+            <div class="field">
+              <label for="phone">Phone*</label>
+              <input type="tel" id="phone" name="phone" required>
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="trip_interest">Trip of Interest</label>
+              <select id="trip_interest" name="trip_interest">
+                <option value="Island in the Sky">Island in the Sky</option>
+                <option value="Arches National Park Tour">Arches National Park Tour</option>
+                <option value="Needles District">Needles District</option>
+                <option value="Horseshoe Canyon">Horseshoe Canyon</option>
+                <option value="Not sure / combo">Not sure — help me choose / combo trip</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="party_size">Party Size</label>
+              <input type="number" id="party_size" name="party_size" min="1" value="2">
+            </div>
+          </div>
+          <div class="field">
+            <label for="preferred_month">Preferred Month</label>
+            <select id="preferred_month" name="preferred_month">
+              <option>July 2026</option>
+              <option>August 2026</option>
+              <option selected>September 2026</option>
+              <option>October 2026</option>
+              <option>Flexible / Not sure</option>
+            </select>
+          </div>
+
+          <!-- HIDDEN ATTRIBUTION FIELDS — auto-filled by script below, sent with every submission -->
+          <input type="hidden" id="utm_source" name="utm_source">
+          <input type="hidden" id="utm_medium" name="utm_medium">
+          <input type="hidden" id="utm_campaign" name="utm_campaign">
+          <input type="hidden" id="utm_term" name="utm_term">
+          <input type="hidden" id="utm_content" name="utm_content">
+          <input type="hidden" id="gclid" name="gclid">
+          <input type="hidden" id="gbraid" name="gbraid">
+          <input type="hidden" id="wbraid" name="wbraid">
+          <input type="hidden" id="ad_group" name="ad_group" value="national_park_tours_4x4">
+          <input type="hidden" id="landing_page_url" name="landing_page_url">
+          <input type="hidden" id="referrer_url" name="referrer_url">
+          <input type="hidden" id="form_name" name="form_name" value="navtec_4x4_lead_form">
+          <input type="hidden" id="submitted_at" name="submitted_at">
+
+          <button type="submit" class="btn btn-primary submit-btn">Check My Availability →</button>
+          <p class="privacy-note">By submitting, you agree to be contacted by NAVTEC Expeditions about your trip. We never sell your information.</p>
+        </form>
+
+        <div id="lead-success">
+          <h3>You're all set 🎉</h3>
+          <p>A NAVTEC guide will reach out shortly with availability for your trip. Prefer to book instantly?</p>
+          <div id="xola-widget-slot">
+            [Xola booking widget embeds here — replace this div with your Xola snippet,
+            or link out to your Xola checkout URL for the guest's selected trip.]
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <div class="wrap">
+    <div class="foot-inner">
+      <div>
+        <strong style="color:#fff;font-family:'Bitter',serif;">NAVTEC Expeditions</strong><br>
+        321 North Main Street, Moab, Utah 84532
+      </div>
+      <div>
+        <a href="tel:+18008331278">1-800-833-1278</a> &nbsp;·&nbsp;
+        <a href="mailto:info@navtec.com">info@navtec.com</a>
+      </div>
+      <div>
+        <a href="https://www.tripadvisor.com/Attraction_Review-g60724-d1474706-Reviews-NAVTEC_Expeditions_Day_Tours-Moab_Utah.html" target="_blank" rel="noopener">TripAdvisor</a> &nbsp;·&nbsp;
+        <a href="https://www.facebook.com/navtecexpeditions/" target="_blank" rel="noopener">Facebook</a>
+      </div>
+    </div>
+    <div class="foot-legal">
+      NAVTEC Expeditions is an authorized concessioner of Canyonlands and Arches National Park. © 2026 NAVTEC Expeditions.
+    </div>
+  </div>
+</footer>
+
+<!-- ================= MOBILE STICKY CTA ================= -->
+<div class="mobile-sticky">
+  <a href="tel:+18008331278" class="btn btn-primary">📞 Call Now</a>
+  <a href="#check-availability" class="btn" style="background:var(--gold);color:var(--void);">Check Availability</a>
+</div>
+
+<script>
+  // ---------- CONFIG ----------
+  const ZAPIER_WEBHOOK_URL = "REPLACE_WITH_YOUR_ZAPIER_WEBHOOK_URL"; // e.g. https://hooks.zapier.com/hooks/catch/xxxx/xxxx/
+
+  // ---------- ATTRIBUTION CAPTURE ----------
+  (function captureAttribution(){
+    const params = new URLSearchParams(window.location.search);
+    const map = ["utm_source","utm_medium","utm_campaign","utm_term","utm_content","gclid","gbraid","wbraid"];
+    map.forEach(key => {
+      const el = document.getElementById(key);
+      if (el) el.value = params.get(key) || "";
+    });
+    document.getElementById("landing_page_url").value = window.location.href;
+    document.getElementById("referrer_url").value = document.referrer || "direct";
+  })();
+
+  function setInterest(tripName){
+    const sel = document.getElementById("trip_interest");
+    if (sel) sel.value = tripName;
+  }
+
+  // ---------- FAQ ACCORDION ----------
+  document.querySelectorAll(".faq-item").forEach(item => {
+    const q = item.querySelector(".faq-q");
+    const a = item.querySelector(".faq-a");
+    q.addEventListener("click", () => {
+      const isOpen = item.classList.contains("open");
+      document.querySelectorAll(".faq-item.open").forEach(openItem => {
+        openItem.classList.remove("open");
+        openItem.querySelector(".faq-a").style.maxHeight = null;
+      });
+      if (!isOpen){
+        item.classList.add("open");
+        a.style.maxHeight = a.scrollHeight + "px";
+      }
+    });
+  });
+
+  // ---------- FORM SUBMIT ----------
+  document.getElementById("lead-form").addEventListener("submit", function(e){
+    e.preventDefault();
+    document.getElementById("submitted_at").value = new Date().toISOString();
+
+    const formData = new FormData(this);
+    const payload = Object.fromEntries(formData.entries());
+
+    if (ZAPIER_WEBHOOK_URL && ZAPIER_WEBHOOK_URL.indexOf("REPLACE_WITH") === -1){
+      fetch(ZAPIER_WEBHOOK_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      }).catch(err => console.error("Webhook error:", err));
+    } else {
+      console.log("Lead payload (webhook not yet configured):", payload);
+    }
+
+    this.style.display = "none";
+    document.getElementById("lead-success").style.display = "block";
+  });
+</script>
+
 </body>
 </html>
