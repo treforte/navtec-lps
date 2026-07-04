@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<!--
+  NAVTEC EXPEDITIONS — Colorado River Rafting Landing Page
+  Ad group focus: Rafting (Cataract Canyon, Westwater, Moab Rafting, Calm Water Cruise)
+  Built for: Google Ads PPC traffic
+
+  INTEGRATION NOTES FOR TRE:
+  1) ZAPIER WEBHOOK — search "ZAPIER_WEBHOOK_URL" below and paste your Zap's
+     Catch Hook URL (can be the same Zap as the 4x4 page, or a dedicated one —
+     the ad_group hidden field is set to "rafting" so your CRM/Sheet can
+     distinguish the source either way).
+  2) XOLA — same pattern as the 4x4 page: lead captured first, then a
+     placeholder <div id="xola-widget-slot"> for your embed or checkout link.
+  3) PHOTOS — three real, NAVTEC-branded photos are now in place: the hero
+     (raft catching air, from a 3840x2160 source), the Westwater card
+     (pulled directly from navtec.com's own site — filename "skull.jpg",
+     which ties nicely to the Skull Rapid mentioned in the copy), and the
+     Cataract 3-Day card (loaded oar rig). The Moab Rafting Half-Day and
+     Cataract One-Day RHIB cards are still gradient placeholders — none of
+     the photos sent so far show a family-friendly calm-water shot or the
+     actual RHIB (rigid hull motorized boat looks distinct from a standard
+     inflatable raft), so I held off rather than mismatch the visual to the
+     product. Send a matching shot for either and I'll drop it into
+     assets/family-float.jpg or assets/cataract-rhib.jpg respectively.
+     Two other photos sent (a blue raft against dark canyon walls, and an
+     orange "NRS 45" raft) had no visible NAVTEC branding and didn't match
+     Moab's red-rock scenery, so I left those out — worth double-checking
+     they're actually from your trips before using them anywhere.
+  4) PRICING — every rate, class, and length below is pulled directly from
+     navtec.com's live Utah Rafting page (not an OTA estimate), so this
+     should already match your Xola rates. Double check before launch in
+     case anything's changed since this was pulled.
+  5) TESTIMONIALS — placeholder copy, matched in tone to real reviews.
+     Replace with verified TripAdvisor/Groupon quotes before launch, same as
+     the 4x4 page (paraphrase only, one quote per source, under 15 words).
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Colorado River Rafting Trips | NAVTEC Expeditions Moab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bitter:wght@500;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#1C0D08;
+    --oxblood:#5C1614;
+    --oxblood-deep:#3E0F0E;
+    --rust:#B0492A;
+    --rust-dark:#8F3620;
+    --gold:#D4A24C;
+    --cream:#F3E9CC;
+    --sand:#E9D9AC;
+    --ink:#2A1810;
+    --ink-soft:#5C4630;
+    --river:#3E6B7A;
+    --river-deep:#294B57;
+    --good:#3F6B47;
+    --shadow: 0 12px 30px rgba(28,13,8,.35);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:'Inter',sans-serif;
+    color:var(--ink);
+    background:var(--cream);
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{font-family:'Bitter',serif;}
+  a{color:inherit;}
+  img,svg{display:block;max-width:100%;}
+  .eyebrow{
+    text-transform:uppercase;
+    letter-spacing:.14em;
+    font-size:.72rem;
+    font-weight:700;
+    color:var(--rust-dark);
+  }
+  .wrap{max-width:1180px;margin:0 auto;padding:0 24px;}
+
+  /* ---------- STICKY TOP BAR ---------- */
+  .topbar{
+    position:sticky;top:0;z-index:50;
+    background:var(--void);
+    border-bottom:3px solid var(--gold);
+  }
+  .topbar-inner{
+    max-width:1180px;margin:0 auto;padding:10px 24px;
+    display:flex;align-items:center;justify-content:space-between;gap:16px;
+  }
+  .brand{display:flex;align-items:center;gap:10px;color:var(--cream);text-decoration:none;}
+  .brand-badge{
+    width:38px;height:38px;border-radius:50%;
+    background:var(--rust);border:2px solid var(--gold);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Bitter',serif;font-weight:800;color:var(--cream);font-size:.95rem;
+    flex-shrink:0;
+  }
+  .brand-name{font-family:'Bitter',serif;font-weight:700;font-size:1.05rem;line-height:1.1;}
+  .brand-name small{display:block;font-family:'Inter',sans-serif;font-weight:500;letter-spacing:.08em;font-size:.62rem;color:var(--gold);text-transform:uppercase;}
+  .top-actions{display:flex;align-items:center;gap:10px;}
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    font-weight:700;text-decoration:none;border:none;cursor:pointer;
+    border-radius:6px;transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
+    font-family:'Inter',sans-serif;
+  }
+  .btn:hover{transform:translateY(-1px);}
+  .btn-call{
+    background:transparent;color:var(--cream);border:2px solid var(--gold);
+    padding:9px 14px;font-size:.9rem;white-space:nowrap;
+  }
+  .btn-call:hover{background:rgba(212,162,76,.12);}
+  .btn-primary{
+    background:var(--river);color:#fff;
+    padding:11px 18px;font-size:.92rem;
+    box-shadow:0 6px 16px rgba(62,107,122,.4);
+  }
+  .btn-primary:hover{background:var(--river-deep);}
+  .btn-lg{padding:16px 30px;font-size:1.05rem;border-radius:8px;}
+  .phone-num{font-variant-numeric:tabular-nums;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    background:linear-gradient(180deg,var(--river-deep) 0%, var(--oxblood-deep) 70%, var(--void) 100%);
+    overflow:hidden;
+    color:var(--cream);
+    padding:56px 0 0;
+  }
+  .hero-inner{
+    max-width:1180px;margin:0 auto;padding:0 24px;
+    display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center;
+    position:relative;z-index:2;
+  }
+  .hero h1{
+    font-size:clamp(2.1rem,4vw,3.3rem);
+    line-height:1.06;margin:14px 0 16px;
+    color:#fff;
+    text-shadow:0 3px 18px rgba(0,0,0,.35);
+  }
+  .hero h1 em{font-style:normal;color:var(--gold);}
+  .hero p.sub{font-size:1.14rem;line-height:1.55;color:var(--sand);max-width:52ch;margin:0 0 26px;}
+  .trust-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px;}
+  .trust-chip{
+    display:flex;align-items:center;gap:8px;
+    background:rgba(0,0,0,.22);border:1px solid rgba(212,162,76,.35);
+    padding:8px 12px;border-radius:999px;font-size:.78rem;font-weight:600;color:var(--sand);
+  }
+  .trust-chip .dot{width:6px;height:6px;border-radius:50%;background:var(--gold);flex-shrink:0;}
+  .hero-cta-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:6px;}
+
+  .hero-art{position:relative;}
+  .canyon-svg{width:100%;height:auto;border-radius:14px;box-shadow:var(--shadow);}
+
+  /* ---------- URGENCY / SEASON BAR ---------- */
+  .season-bar{
+    background:var(--gold);color:var(--void);
+  }
+  .season-inner{
+    max-width:1180px;margin:0 auto;padding:14px 24px;
+    display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:center;
+    text-align:center;font-size:.92rem;font-weight:600;
+  }
+  .season-inner strong{font-family:'Bitter',serif;font-weight:800;}
+  .season-inner a{text-decoration:underline;font-weight:800;white-space:nowrap;}
+
+  /* ---------- SECTION SCAFFOLDING ---------- */
+  section{padding:64px 0;}
+  .section-head{max-width:640px;margin:0 auto 40px;text-align:center;}
+  .section-head h2{font-size:clamp(1.6rem,3vw,2.2rem);margin:8px 0 10px;color:var(--void);}
+  .section-head p{color:var(--ink-soft);font-size:1.02rem;line-height:1.55;margin:0;}
+  .section-alt{background:#fff;}
+
+  /* ---------- TRIP CARDS ---------- */
+  .trip-grid{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(255px,1fr));gap:22px;
+  }
+  .trip-card{
+    background:var(--cream);
+    border:1px solid rgba(42,24,16,.12);
+    border-top:6px solid var(--river);
+    border-radius:10px;
+    overflow:hidden;
+    box-shadow:0 8px 20px rgba(42,24,16,.08);
+    display:flex;flex-direction:column;
+    transition:transform .18s ease, box-shadow .18s ease;
+  }
+  .trip-card:hover{transform:translateY(-4px);box-shadow:0 16px 32px rgba(42,24,16,.16);}
+  .trip-photo{
+    height:170px;
+    background:linear-gradient(135deg,var(--river-deep),var(--river) 60%, var(--gold));
+    position:relative;color:rgba(255,255,255,.85);
+    display:flex;align-items:flex-end;padding:10px 14px;
+    font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;font-weight:700;
+  }
+  .trip-photo span{background:rgba(0,0,0,.28);padding:3px 8px;border-radius:4px;position:relative;z-index:1;}
+  .trip-body{padding:18px 18px 20px;display:flex;flex-direction:column;gap:10px;flex:1;}
+  .trip-body h3{font-size:1.14rem;margin:0;color:var(--void);}
+  .trip-meta{display:flex;gap:14px;flex-wrap:wrap;font-size:.78rem;color:var(--ink-soft);font-weight:600;}
+  .trip-meta b{color:var(--river-deep);}
+  .trip-body p{font-size:.9rem;line-height:1.5;color:var(--ink-soft);margin:0;flex:1;}
+  .trip-price{font-family:'Bitter',serif;font-weight:800;color:var(--river-deep);font-size:1.02rem;}
+  .trip-price small{font-family:'Inter',sans-serif;font-weight:600;color:var(--ink-soft);font-size:.72rem;}
+  .trip-cta{
+    margin-top:4px;text-align:center;background:var(--void);color:var(--cream);
+    padding:10px;border-radius:6px;font-size:.85rem;font-weight:700;text-decoration:none;
+    display:block;
+  }
+  .trip-cta:hover{background:var(--oxblood);}
+
+  /* ---------- DIFFERENTIATORS ---------- */
+  .diff-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:24px;}
+  .diff-card{padding:22px;background:var(--void);color:var(--cream);border-radius:10px;position:relative;}
+  .diff-card::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:var(--gold);border-radius:10px 10px 0 0;}
+  .diff-icon{
+    width:44px;height:44px;border-radius:50%;background:var(--river);
+    display:flex;align-items:center;justify-content:center;margin-bottom:14px;
+    font-family:'Bitter',serif;font-weight:800;font-size:1.1rem;
+  }
+  .diff-card h3{font-size:1.02rem;margin:0 0 8px;color:#fff;}
+  .diff-card p{font-size:.87rem;line-height:1.5;color:var(--sand);margin:0;}
+
+  /* ---------- COMPARISON TABLE ---------- */
+  .compare-wrap{overflow-x:auto;border-radius:10px;box-shadow:var(--shadow);}
+  table.compare{width:100%;border-collapse:collapse;background:#fff;min-width:760px;}
+  table.compare th{
+    background:var(--void);color:var(--cream);text-align:left;
+    padding:14px 16px;font-size:.78rem;text-transform:uppercase;letter-spacing:.05em;
+  }
+  table.compare td{padding:14px 16px;border-bottom:1px solid #eee0be;font-size:.9rem;color:var(--ink);}
+  table.compare tr:last-child td{border-bottom:none;}
+  table.compare tr:nth-child(even) td{background:#FBF5E5;}
+  .pill{display:inline-block;padding:3px 9px;border-radius:999px;font-size:.72rem;font-weight:700;}
+  .pill-easy{background:#E4F0E6;color:var(--good);}
+  .pill-mod{background:#F7E7CE;color:var(--rust-dark);}
+  .pill-strenuous{background:#F3DBD3;color:#8F3620;}
+
+  /* ---------- TESTIMONIALS ---------- */
+  .testi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;}
+  .testi-card{background:var(--sand);border-radius:10px;padding:22px;position:relative;}
+  .testi-stars{color:var(--rust-dark);font-size:.95rem;letter-spacing:2px;margin-bottom:10px;}
+  .testi-card p{font-size:.92rem;line-height:1.55;color:var(--ink);margin:0 0 12px;}
+  .testi-name{font-size:.8rem;font-weight:700;color:var(--ink-soft);}
+
+  /* ---------- FAQ ---------- */
+  .faq-item{border-bottom:1px solid rgba(42,24,16,.15);}
+  .faq-q{
+    width:100%;text-align:left;background:none;border:none;cursor:pointer;
+    padding:18px 4px;display:flex;justify-content:space-between;align-items:center;gap:14px;
+    font-family:'Bitter',serif;font-weight:700;font-size:1rem;color:var(--void);
+  }
+  .faq-q .plus{font-size:1.4rem;color:var(--river);flex-shrink:0;transition:transform .2s ease;}
+  .faq-item.open .plus{transform:rotate(45deg);}
+  .faq-a{max-height:0;overflow:hidden;transition:max-height .25s ease;}
+  .faq-a p{padding:0 4px 18px;margin:0;font-size:.92rem;line-height:1.6;color:var(--ink-soft);}
+
+  /* ---------- LEAD FORM ---------- */
+  .form-section{
+    background:var(--oxblood-deep);
+    background-image:radial-gradient(circle at 20% 20%, rgba(212,162,76,.08), transparent 45%);
+    color:var(--cream);
+  }
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:start;}
+  .form-copy h2{color:#fff;font-size:clamp(1.6rem,3vw,2.1rem);margin:8px 0 14px;}
+  .form-copy p{color:var(--sand);line-height:1.6;font-size:1rem;}
+  .form-copy ul{list-style:none;padding:0;margin:22px 0 0;display:flex;flex-direction:column;gap:12px;}
+  .form-copy li{display:flex;gap:10px;font-size:.92rem;color:var(--cream);align-items:flex-start;}
+  .form-copy li .check{color:var(--gold);font-weight:800;flex-shrink:0;}
+
+  .lead-card{
+    background:var(--cream);color:var(--ink);border-radius:12px;padding:28px;box-shadow:var(--shadow);
+  }
+  .lead-card h3{margin:0 0 4px;font-size:1.2rem;color:var(--void);}
+  .lead-card .sub-note{font-size:.85rem;color:var(--ink-soft);margin:0 0 18px;}
+  .field{margin-bottom:14px;}
+  .field label{display:block;font-size:.78rem;font-weight:700;margin-bottom:5px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.03em;}
+  .field input, .field select{
+    width:100%;padding:11px 12px;border:1.5px solid #D9C79A;border-radius:6px;
+    font-family:'Inter',sans-serif;font-size:.94rem;background:#fff;color:var(--ink);
+  }
+  .field input:focus, .field select:focus{outline:2px solid var(--river);outline-offset:1px;border-color:var(--river);}
+  .field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .submit-btn{width:100%;margin-top:6px;padding:14px;font-size:1rem;border-radius:7px;}
+  .privacy-note{font-size:.72rem;color:var(--ink-soft);margin-top:12px;line-height:1.5;}
+  #lead-success{display:none;text-align:center;padding:10px 4px;}
+  #lead-success h3{color:var(--good);}
+  #xola-widget-slot{margin-top:14px;border:2px dashed #D9C79A;border-radius:8px;padding:18px;font-size:.82rem;color:var(--ink-soft);text-align:center;}
+
+  /* ---------- FOOTER ---------- */
+  footer{background:var(--void);color:var(--sand);padding:36px 0 90px;}
+  .foot-inner{display:flex;flex-wrap:wrap;justify-content:space-between;gap:20px;align-items:center;font-size:.85rem;}
+  .foot-inner a{text-decoration:none;color:var(--gold);}
+  .foot-legal{width:100%;border-top:1px solid rgba(255,255,255,.1);margin-top:20px;padding-top:16px;font-size:.75rem;color:#B49E7A;}
+
+  /* ---------- MOBILE STICKY CTA ---------- */
+  .mobile-sticky{
+    display:none;position:fixed;bottom:0;left:0;right:0;z-index:60;
+    background:var(--void);border-top:3px solid var(--gold);
+    padding:10px 14px;gap:10px;
+  }
+  .mobile-sticky .btn{flex:1;padding:13px 8px;font-size:.88rem;}
+
+  @media (max-width:860px){
+    .hero-inner{grid-template-columns:1fr;}
+    .hero-art{order:-1;}
+    .form-grid{grid-template-columns:1fr;}
+    .field-row{grid-template-columns:1fr;}
+    .btn-call{display:none;}
+    .mobile-sticky{display:flex;}
+    body{padding-bottom:0;}
+    section{padding:46px 0;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= TOP BAR ================= -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <a href="#top" class="brand">
+      <div class="brand-badge">NV</div>
+      <div class="brand-name">NAVTEC Expeditions<small>Moab, Utah · Est. 3 Generations</small></div>
+    </a>
+    <div class="top-actions">
+      <a href="tel:+18008331278" class="btn btn-call">📞 <span class="phone-num">1-800-833-1278</span></a>
+      <a href="#check-availability" class="btn btn-primary">Check Availability</a>
+    </div>
+  </div>
+</div>
+
+<!-- ================= HERO ================= -->
+<div class="hero" id="top">
+  <div class="hero-inner">
+    <div>
+      <span class="eyebrow" style="color:var(--gold)">Authorized Canyonlands Concessioner</span>
+      <h1>Colorado River Rafting — From <em>Calm-Water Floats</em> to Cataract Canyon Whitewater</h1>
+      <p class="sub">Half-day family floats to 5-day wilderness expeditions. Book direct with Moab's original rafting outfitter — three generations on this river.</p>
+      <div class="hero-cta-row">
+        <a href="#check-availability" class="btn btn-primary btn-lg">Check Availability →</a>
+        <a href="tel:+18008331278" class="btn btn-call btn-lg">📞 Call 1-800-833-1278</a>
+      </div>
+      <div class="trust-row">
+        <div class="trust-chip"><span class="dot"></span>4.8★ TripAdvisor — 4,500+ Reviews</div>
+        <div class="trust-chip"><span class="dot"></span>Only Outfitter Running Rapids Up &amp; Down River</div>
+        <div class="trust-chip"><span class="dot"></span>Trips for Every Comfort Level</div>
+        <div class="trust-chip"><span class="dot"></span>Family-Owned Since Day One</div>
+      </div>
+    </div>
+    <div class="hero-art">
+      <img class="canyon-svg" src="assets/hero-whitewater.jpg" alt="NAVTEC raft catching air through Colorado River whitewater" style="object-fit:cover;height:420px;width:100%;">
+    </div>
+  </div>
+</div>
+
+<!-- ================= SEASON / URGENCY BAR ================= -->
+<div class="season-bar">
+  <div class="season-inner">
+    <span>🌊 <strong>Rafting season closes in early November</strong> — Cataract Canyon and Westwater dates are filling for the final weeks of the season.</span>
+    <a href="#check-availability">Check remaining 2026 dates →</a>
+  </div>
+</div>
+
+<!-- ================= TRIP OPTIONS ================= -->
+<section id="trips">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Colorado River Rafting</span>
+      <h2>A Trip for Every Comfort Level</h2>
+      <p>From a gentle Class I float with the kids to Class V whitewater in Cataract Canyon — every trip below is guided by NAVTEC's own boatmen, on our own boats.</p>
+    </div>
+    <div class="trip-grid">
+
+      <div class="trip-card">
+        <div class="trip-photo">
+          <img src="assets/family-float.jpg" alt="Family rafting trip on the calm section of the Colorado River near Moab" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'">
+          <span>Moab Rafting · Half-Day</span>
+        </div>
+        <div class="trip-body">
+          <h3>Moab Rafting Half-Day</h3>
+          <div class="trip-meta"><span><b>Half Day</b></span><span>Class II–III</span></div>
+          <p>Seven miles of moderate rapids, perfect for the whole family. Daily departures at 9am, noon, and 2pm.</p>
+          <div class="trip-price">$85 <small>/ person</small></div>
+          <a href="#check-availability" class="trip-cta" onclick="setInterest('Moab Rafting Half-Day')">Check Dates</a>
+        </div>
+      </div>
+
+      <div class="trip-card">
+        <div class="trip-photo">
+          <img src="assets/westwater-whitewater.jpg" alt="Whitewater rafting through Westwater Canyon rapids" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'">
+          <span>Westwater · 1 Day</span>
+        </div>
+        <div class="trip-body">
+          <h3>Westwater Canyon One-Day</h3>
+          <div class="trip-meta"><span><b>1 Day</b></span><span>Class III–IV</span></div>
+          <p>Run Funnel Falls, Sock-It-To-Me, and the formidable Skull Rapid through Westwater's steep narrow canyon.</p>
+          <div class="trip-price">$248 <small>/ person</small></div>
+          <a href="#check-availability" class="trip-cta" onclick="setInterest('Westwater One-Day')">Check Dates</a>
+        </div>
+      </div>
+
+      <div class="trip-card">
+        <div class="trip-photo">
+          <img src="assets/cataract-rhib.jpg" alt="RHIB boat running Cataract Canyon rapids on the Colorado River" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'">
+          <span>Cataract · Premier 1-Day</span>
+        </div>
+        <div class="trip-body">
+          <h3>Cataract Canyon One-Day (RHIB)</h3>
+          <div class="trip-meta"><span><b>1 Day</b></span><span>Class IV–V</span></div>
+          <p>100 miles through Canyonlands National Park's legendary rapids by Rigid Hull Inflatable Boat — NAVTEC's premier one-day trip.</p>
+          <div class="trip-price">$848 <small>/ person</small></div>
+          <a href="#check-availability" class="trip-cta" onclick="setInterest('Cataract One-Day RHIB')">Check Dates</a>
+        </div>
+      </div>
+
+      <div class="trip-card">
+        <div class="trip-photo">
+          <img src="assets/multiday-camp.jpg" alt="Multi-day Cataract Canyon rafting trip with beach camping" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'">
+          <span>Cataract · Multi-Day</span>
+        </div>
+        <div class="trip-body">
+          <h3>Cataract Canyon 3-Day Expedition</h3>
+          <div class="trip-meta"><span><b>3 Days</b></span><span>Class IV–V</span></div>
+          <p>Legendary rapids by oar boat, ancient rock art panels, side-canyon hikes, and camping on white sand beaches.</p>
+          <div class="trip-price">$1,198 <small>/ person</small></div>
+          <a href="#check-availability" class="trip-cta" onclick="setInterest('Cataract 3-Day')">Check Dates</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ================= DIFFERENTIATORS ================= -->
+<section class="section-alt" style="background:var(--void);">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow" style="color:var(--gold)">Why NAVTEC Over Any Other Moab Outfitter</span>
+      <h2 style="color:#fff;">What to Know Before You Book a Rafting Outfitter</h2>
+      <p style="color:var(--sand);">You're comparing outfitters — here's what actually sets a licensed, family-run operation apart on the water.</p>
+    </div>
+    <div class="diff-grid">
+      <div class="diff-card">
+        <div class="diff-icon">↕</div>
+        <h3>Rapids, Twice</h3>
+        <p>NAVTEC's whitewater RHIB is the only Moab craft that runs Colorado River rapids both upstream and downstream — you hit each rapid at least twice on our RHIB tours.</p>
+      </div>
+      <div class="diff-card">
+        <div class="diff-icon">✓</div>
+        <h3>Authorized Concessioner</h3>
+        <p>Licensed to run Cataract Canyon inside Canyonlands National Park — not every outfitter holds this permit.</p>
+      </div>
+      <div class="diff-card">
+        <div class="diff-icon">3</div>
+        <h3>Three Generations Deep</h3>
+        <p>Family-owned and guided on this river since the start — our boatmen know every rapid by name and by water level.</p>
+      </div>
+      <div class="diff-card">
+        <div class="diff-icon">👥</div>
+        <h3>Small-Boat Options</h3>
+        <p>Our Sport Boat scenic cruise seats just 6 guests per boat — an intimate ride through Meander Canyon, not a crowded barge.</p>
+      </div>
+      <div class="diff-card">
+        <div class="diff-icon">🎚</div>
+        <h3>Class I to Class V</h3>
+        <p>From a toddler-friendly calm float to five days of big Cataract whitewater — one outfitter for your whole group's comfort range.</p>
+      </div>
+      <div class="diff-card">
+        <div class="diff-icon">🗺</div>
+        <h3>Combine Land + River</h3>
+        <p>Pair your rafting trip with a Canyonlands or Arches 4x4 tour for a complete Moab itinerary in one booking.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= COMPARISON TABLE ================= -->
+<section class="section-alt">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Compare Every Trip</span>
+      <h2>Find the Right River Trip for Your Group</h2>
+      <p>Every rafting option NAVTEC runs, straight from our current rates — no digging through pages to compare.</p>
+    </div>
+    <div class="compare-wrap">
+      <table class="compare">
+        <thead>
+          <tr><th>Trip</th><th>Length</th><th>Class</th><th>Rate</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><b>Sport Boat Scenic Cruise</b></td><td>Half Day</td><td><span class="pill pill-easy">Class I</span></td><td>$198</td></tr>
+          <tr><td><b>Moab Rafting Half-Day</b></td><td>Half Day</td><td><span class="pill pill-easy">Class II–III</span></td><td>$85</td></tr>
+          <tr><td><b>Moab Rafting One-Day</b></td><td>1 Day</td><td><span class="pill pill-easy">Class II–III</span></td><td>$100</td></tr>
+          <tr><td><b>Moab Rafting Camp Out</b></td><td>2 Days</td><td><span class="pill pill-easy">Class II–III</span></td><td>$415</td></tr>
+          <tr><td><b>Moab Rafting RHIB (Up &amp; Down)</b></td><td>Half Day</td><td><span class="pill pill-easy">Class II–III</span></td><td>$198</td></tr>
+          <tr><td><b>Westwater Canyon One-Day</b></td><td>1 Day</td><td><span class="pill pill-mod">Class III–IV</span></td><td>$248</td></tr>
+          <tr><td><b>Westwater Canyon Overnight</b></td><td>2 Days</td><td><span class="pill pill-mod">Class III–IV</span></td><td>$498</td></tr>
+          <tr><td><b>Cataract Canyon One-Day (RHIB)</b></td><td>1 Day</td><td><span class="pill pill-strenuous">Class IV–V</span></td><td>$848</td></tr>
+          <tr><td><b>Cataract Canyon Overnight</b></td><td>2 Days</td><td><span class="pill pill-strenuous">Class IV–V</span></td><td>$998</td></tr>
+          <tr><td><b>Cataract Canyon 3-Day</b></td><td>3 Days</td><td><span class="pill pill-strenuous">Class IV–V</span></td><td>$1,198</td></tr>
+          <tr><td><b>Cataract Canyon 4-Day</b></td><td>4 Days</td><td><span class="pill pill-strenuous">Class IV–V</span></td><td>$1,298</td></tr>
+          <tr><td><b>Cataract Canyon 5-Day</b></td><td>5 Days</td><td><span class="pill pill-strenuous">Class IV–V</span></td><td>$1,498</td></tr>
+          <tr><td><b>Labyrinth Canyon 4-Day</b></td><td>4 Days</td><td><span class="pill pill-easy">Class I</span></td><td>Call to Inquire</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TESTIMONIALS ================= -->
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">From Recent Travelers</span>
+      <h2>Trusted on the River for Generations</h2>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p>Running Westwater's biggest rapids twice on the RHIB was the highlight of our whole Moab trip.</p>
+        <div class="testi-name">— Verified TripAdvisor Traveler</div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p>Our guide read the river like a book and made sure our kids felt confident the entire float.</p>
+        <div class="testi-name">— Verified TripAdvisor Traveler</div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p>Three days in Cataract Canyon, camping on the beach — this is the real Colorado River experience.</p>
+        <div class="testi-name">— Verified Groupon Review</div>
+      </div>
+    </div>
+    <p style="text-align:center;color:var(--ink-soft);font-size:.8rem;margin-top:18px;">[Replace with verified quotes from TripAdvisor / Groupon before launch]</p>
+  </div>
+</section>
+
+<!-- ================= FAQ ================= -->
+<section class="section-alt">
+  <div class="wrap" style="max-width:800px;">
+    <div class="section-head">
+      <span class="eyebrow">Before You Book</span>
+      <h2>Common Questions</h2>
+    </div>
+    <div id="faq-list">
+      <div class="faq-item">
+        <button class="faq-q">Which trip is right for my family? <span class="plus">+</span></button>
+        <div class="faq-a"><p>For young kids or first-timers, the Moab Rafting Half-Day (Class II–III) or Sport Boat Scenic Cruise (Class I) are great starting points. Ready for real whitewater? Westwater and Cataract Canyon step up to Class III through V. Tell us your group's ages and comfort level on the form below and we'll point you to the right trip.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Do I need swimming experience? <span class="plus">+</span></button>
+        <div class="faq-a"><p>Life jackets are worn at all times and required for every guest. Basic swimming comfort is recommended for Class III+ trips; the calm-water and Class I–II trips are appropriate for non-swimmers with a properly fitted life jacket.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">What's the difference between the RHIB and a paddle or oar raft? <span class="plus">+</span></button>
+        <div class="faq-a"><p>The RHIB (Rigid Hull Inflatable Boat) is motorized and more maneuverable — it's how we're able to run rapids upstream and downstream on our Moab Rafting RHIB and Cataract One-Day trips. Paddle and oar rafts are non-motorized and used on our multi-day expeditions for a quieter, more traditional river experience.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">What's included on multi-day trips? <span class="plus">+</span></button>
+        <div class="faq-a"><p>All camping gear, meals, and guiding are included on overnight and multi-day trips — you bring your personal items and a sense of adventure. We'll send a full packing list once you book.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Will smoke or air quality affect my rafting trip? <span class="plus">+</span></button>
+        <div class="faq-a"><p>River corridors typically see less smoke impact than backcountry overlooks, but conditions can shift. We track air quality daily and offer free date changes if your specific date looks affected.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Can I combine rafting with a 4x4 tour? <span class="plus">+</span></button>
+        <div class="faq-a"><p>Absolutely — many guests pair a Colorado River trip with a Canyonlands or Arches 4x4 tour for a complete Moab itinerary. Mention it on the form below and we'll help you build a combo schedule.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= LEAD FORM ================= -->
+<section class="form-section" id="check-availability">
+  <div class="wrap">
+    <div class="form-grid">
+      <div class="form-copy">
+        <span class="eyebrow" style="color:var(--gold)">Check Availability</span>
+        <h2>Tell Us Your Trip — We'll Confirm the Best Dates</h2>
+        <p>The 2026 season closes in early November. Fill this out and a NAVTEC guide will follow up with real-time availability, pricing for your group size, and combo options.</p>
+        <ul>
+          <li><span class="check">✓</span> Response within one business day (often same-day)</li>
+          <li><span class="check">✓</span> No payment required to check availability</li>
+          <li><span class="check">✓</span> Ask about land + river combo pricing</li>
+          <li><span class="check">✓</span> Free date changes if conditions shift</li>
+        </ul>
+      </div>
+
+      <div class="lead-card">
+        <form id="lead-form">
+          <h3>Get Your Availability</h3>
+          <p class="sub-note">Or call us directly: <a href="tel:+18008331278" style="color:var(--river-deep);font-weight:700;">1-800-833-1278</a></p>
+
+          <div class="field">
+            <label for="full_name">Full Name*</label>
+            <input type="text" id="full_name" name="full_name" required>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="email">Email*</label>
+              <input type="email" id="email" name="email" required>
+            </div>
+            <div class="field">
+              <label for="phone">Phone*</label>
+              <input type="tel" id="phone" name="phone" required>
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="trip_interest">Trip of Interest</label>
+              <select id="trip_interest" name="trip_interest">
+                <option value="Moab Rafting Half-Day">Moab Rafting Half-Day</option>
+                <option value="Westwater One-Day">Westwater One-Day</option>
+                <option value="Cataract One-Day RHIB">Cataract One-Day (RHIB)</option>
+                <option value="Cataract 3-Day">Cataract Multi-Day Expedition</option>
+                <option value="Sport Boat Scenic Cruise">Sport Boat Scenic Cruise</option>
+                <option value="Not sure / combo">Not sure — help me choose / combo trip</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="party_size">Party Size</label>
+              <input type="number" id="party_size" name="party_size" min="1" value="2">
+            </div>
+          </div>
+          <div class="field">
+            <label for="preferred_month">Preferred Month</label>
+            <select id="preferred_month" name="preferred_month">
+              <option>July 2026</option>
+              <option>August 2026</option>
+              <option selected>September 2026</option>
+              <option>October 2026</option>
+              <option>Flexible / Not sure</option>
+            </select>
+          </div>
+
+          <!-- HIDDEN ATTRIBUTION FIELDS — auto-filled by script below, sent with every submission -->
+          <input type="hidden" id="utm_source" name="utm_source">
+          <input type="hidden" id="utm_medium" name="utm_medium">
+          <input type="hidden" id="utm_campaign" name="utm_campaign">
+          <input type="hidden" id="utm_term" name="utm_term">
+          <input type="hidden" id="utm_content" name="utm_content">
+          <input type="hidden" id="gclid" name="gclid">
+          <input type="hidden" id="gbraid" name="gbraid">
+          <input type="hidden" id="wbraid" name="wbraid">
+          <input type="hidden" id="ad_group" name="ad_group" value="rafting">
+          <input type="hidden" id="landing_page_url" name="landing_page_url">
+          <input type="hidden" id="referrer_url" name="referrer_url">
+          <input type="hidden" id="form_name" name="form_name" value="navtec_rafting_lead_form">
+          <input type="hidden" id="submitted_at" name="submitted_at">
+
+          <button type="submit" class="btn btn-primary submit-btn">Check My Availability →</button>
+          <p class="privacy-note">By submitting, you agree to be contacted by NAVTEC Expeditions about your trip. We never sell your information.</p>
+        </form>
+
+        <div id="lead-success">
+          <h3>You're all set 🎉</h3>
+          <p>A NAVTEC guide will reach out shortly with availability for your trip. Prefer to book instantly?</p>
+          <div id="xola-widget-slot">
+            [Xola booking widget embeds here — replace this div with your Xola snippet,
+            or link out to your Xola checkout URL for the guest's selected trip.]
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <div class="wrap">
+    <div class="foot-inner">
+      <div>
+        <strong style="color:#fff;font-family:'Bitter',serif;">NAVTEC Expeditions</strong><br>
+        321 North Main Street, Moab, Utah 84532
+      </div>
+      <div>
+        <a href="tel:+18008331278">1-800-833-1278</a> &nbsp;·&nbsp;
+        <a href="mailto:info@navtec.com">info@navtec.com</a>
+      </div>
+      <div>
+        <a href="https://www.tripadvisor.com/Attraction_Review-g60724-d1474706-Reviews-NAVTEC_Expeditions_Day_Tours-Moab_Utah.html" target="_blank" rel="noopener">TripAdvisor</a> &nbsp;·&nbsp;
+        <a href="https://www.facebook.com/navtecexpeditions/" target="_blank" rel="noopener">Facebook</a>
+      </div>
+    </div>
+    <div class="foot-legal">
+      NAVTEC Expeditions is an authorized concessioner of Canyonlands and Arches National Park. © 2026 NAVTEC Expeditions.
+    </div>
+  </div>
+</footer>
+
+<!-- ================= MOBILE STICKY CTA ================= -->
+<div class="mobile-sticky">
+  <a href="tel:+18008331278" class="btn btn-primary">📞 Call Now</a>
+  <a href="#check-availability" class="btn" style="background:var(--gold);color:var(--void);">Check Availability</a>
+</div>
+
+<script>
+  // ---------- CONFIG ----------
+  const ZAPIER_WEBHOOK_URL = "REPLACE_WITH_YOUR_ZAPIER_WEBHOOK_URL"; // e.g. https://hooks.zapier.com/hooks/catch/xxxx/xxxx/
+
+  // ---------- ATTRIBUTION CAPTURE ----------
+  (function captureAttribution(){
+    const params = new URLSearchParams(window.location.search);
+    const map = ["utm_source","utm_medium","utm_campaign","utm_term","utm_content","gclid","gbraid","wbraid"];
+    map.forEach(key => {
+      const el = document.getElementById(key);
+      if (el) el.value = params.get(key) || "";
+    });
+    document.getElementById("landing_page_url").value = window.location.href;
+    document.getElementById("referrer_url").value = document.referrer || "direct";
+  })();
+
+  function setInterest(tripName){
+    const sel = document.getElementById("trip_interest");
+    if (sel) sel.value = tripName;
+  }
+
+  // ---------- FAQ ACCORDION ----------
+  document.querySelectorAll(".faq-item").forEach(item => {
+    const q = item.querySelector(".faq-q");
+    const a = item.querySelector(".faq-a");
+    q.addEventListener("click", () => {
+      const isOpen = item.classList.contains("open");
+      document.querySelectorAll(".faq-item.open").forEach(openItem => {
+        openItem.classList.remove("open");
+        openItem.querySelector(".faq-a").style.maxHeight = null;
+      });
+      if (!isOpen){
+        item.classList.add("open");
+        a.style.maxHeight = a.scrollHeight + "px";
+      }
+    });
+  });
+
+  // ---------- FORM SUBMIT ----------
+  document.getElementById("lead-form").addEventListener("submit", function(e){
+    e.preventDefault();
+    document.getElementById("submitted_at").value = new Date().toISOString();
+
+    const formData = new FormData(this);
+    const payload = Object.fromEntries(formData.entries());
+
+    if (ZAPIER_WEBHOOK_URL && ZAPIER_WEBHOOK_URL.indexOf("REPLACE_WITH") === -1){
+      fetch(ZAPIER_WEBHOOK_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      }).catch(err => console.error("Webhook error:", err));
+    } else {
+      console.log("Lead payload (webhook not yet configured):", payload);
+    }
+
+    this.style.display = "none";
+    document.getElementById("lead-success").style.display = "block";
+  });
+</script>
+
+</body>
+</html>
